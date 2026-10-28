@@ -19,16 +19,19 @@ The quiz validates the requested question count, unique non-empty questions and 
 ## Run locally
 ```powershell
 .\venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+pip install -r requirements-local.txt
 $env:HF_TOKEN = "hf_xxx"   # Recommended: Hugging Face Inference API
 python app.py
 ```
 
-Without `HF_TOKEN`, the app loads the local Qwen fallback model the first time it is used; this downloads the model and requires sufficient memory. Install all dependencies first with `python -m pip install -r requirements.txt`. Run that command in the same activated environment used to start the app. If generation fails, the app reports whether the API request or local fallback failed.
+Without `HF_TOKEN`, the app loads the local Qwen fallback model the first time it is used; this downloads the model and requires sufficient memory. The optional local-model packages are listed in `requirements-local.txt`; `requirements.txt` contains the lighter dependencies for API-based deployments. If generation fails, the app reports whether the API request or local fallback failed.
 
 ## Deploy on Hugging Face Spaces
 1. Create a Space (SDK: Gradio). 2. Settings → Secrets → add `HF_TOKEN`.
 3. Push these files: `git add . && git commit -m init && git push`.
+
+## Deploy on Vercel
+Vercel serves the Gradio interface through the FastAPI ASGI entrypoint exported as `app` in `app.py`. Configure `HF_TOKEN` in the Vercel project environment variables for quiz generation; local model downloads are intentionally excluded from the serverless dependencies.
 
 ## Limitations
 PDF export uses latin-1 fonts (Hindi displays in the app and CSV, but may not render correctly in the PDF); scanned PDFs need OCR; free API has rate limits. PDF uploads are limited to 10 MB, and pasted text must contain at least 30 words.

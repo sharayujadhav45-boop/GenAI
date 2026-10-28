@@ -39,7 +39,7 @@ def _call_local(messages, max_tokens):
         except ImportError as e:
             raise RuntimeError(
                 "The local model needs PyTorch and Transformers. From the project folder, "
-                "run `python -m pip install -r requirements.txt` using the same Python "
+                "run `python -m pip install -r requirements-local.txt` using the same Python "
                 "environment that starts this app, then restart it. Alternatively, set "
                 "HF_TOKEN to use the Hugging Face Inference API."
             ) from e

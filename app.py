@@ -1,6 +1,7 @@
 """Gradio UI for the AI Quiz & MCQ Generator with Beautiful Peach Light Theme."""
 import time
 import gradio as gr
+from fastapi import FastAPI
 from prompts import user_prompt
 from llm import MODEL, generate_quiz
 from rag import extract_pdf_text, retrieve
@@ -1415,6 +1416,15 @@ with gr.Blocks(
     start.click(start_quiz, state, quiz_outputs)
     sub.click(check, [state, radio], quiz_outputs)
     nb.click(nxt, state, quiz_outputs)
+
+# Vercel's Python runtime serves the exported ASGI application.
+app = gr.mount_gradio_app(
+    FastAPI(),
+    demo,
+    path="/",
+    theme=PEACH_THEME,
+    css=APP_CSS,
+)
 
 if __name__ == "__main__":
     demo.launch(
